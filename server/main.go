@@ -11,8 +11,9 @@ import (
 )
 
 func main() {
+  gin.SetMode(gin.ReleaseMode)
   err := godotenv.Load()
-  router := gin.Default()
+  router := gin.New()
   api := router.Group("/api/v1")
 
   routes.RegisterRoutes(api)

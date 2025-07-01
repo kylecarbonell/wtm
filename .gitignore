@@ -1,23 +1,47 @@
-node_modules/
-.expo/
-dist/
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
 
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
 
+# Build artifacts
+/build
+/bin
+/dist
 
+# Dependency directories (if using vendoring)
+vendor/
 
-ios
-android
+# IDE/editor junk
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
 
-# macOS
+# OS files
 .DS_Store
+Thumbs.db
 
-# Temporary files created by Metro to check the health of the file watcher
-.metro-health-check*
+# Logs
+*.log
+
+# Go coverage & test output
+coverage.out
+*.coverprofile
+
+# Go module cache (sometimes)
+go.sum
+
+# Node-related (if using frontend in project)
+node_modules/
+
+.env
+.env.*
+
+tmp/
+.expo

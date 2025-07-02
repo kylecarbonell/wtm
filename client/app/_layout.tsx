@@ -1,5 +1,5 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Tabs } from 'expo-router';
+import FontAwesome from '../$node_modules/@expo/vector-icons/FontAwesome.js';
+import { Tabs } from '../$node_modules/expo-router/build/index.js';
 
 export default function TabLayout() {
     return (

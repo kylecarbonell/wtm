@@ -54,5 +54,7 @@ jobs:
       - name: Expo config check
         run: npx expo config --type prebuild
 
-      - name: Lint frontend
-        run: bun lint
+      - name: Run lint & format checks
+        run: |
+          bun run lint
+          bun run format:check

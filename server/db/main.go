@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/kylecarbonell/wtm/db/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -33,5 +34,6 @@ func Connect() {
 	DB = db
 
 	// Migrations to add in tables
+	DB.AutoMigrate(&models.Post{}, &models.User{})
 	fmt.Println("✅ Connected to database")
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -22,12 +21,12 @@ func main() {
 	log.Fatal("❌ Error loading .env file")
   }
 
-  port := os.Getenv("PORT")
-  if port == ""{
-	port = "8080"
+  host := os.Getenv("HOST")
+  if host == ""{
+	host = "0.0.0.0:8080"
   }
 
-  fmt.Println("Server running on port " + port)
+  log.Println("Server running on " + host)
 
-  router.Run(`localhost:` + port) 
+  router.Run(host) 
 }

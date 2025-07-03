@@ -7,7 +7,7 @@ import (
 )
 
 func Ping(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "pong"})
+	c.JSON(http.StatusOK, gin.H{"message": "THIS IS NEW ROUTE"})
 }
 
 func GetUsers(c *gin.Context) {

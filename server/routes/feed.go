@@ -9,6 +9,6 @@ import (
 func GetFeedRoutes(router *gin.RouterGroup){
 	api := router.Group("/feed")
 	{
-		api.GET("/", middleware.Auth() ,controllers.Ping)
+		api.GET("/", middleware.Auth(), controllers.Ping)
 	}
 }

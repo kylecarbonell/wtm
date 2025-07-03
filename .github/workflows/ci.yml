@@ -27,9 +27,9 @@ jobs:
       - name: Build backend
         run: go build ./...
 
-     - name: Run backend tests (if any)
-       run: |
-        go test ./... || echo "No tests found"
+      - name: Run backend tests (if any)
+        run: |
+          go test ./... || echo "No tests found"
 
   frontend:
     runs-on: ubuntu-latest

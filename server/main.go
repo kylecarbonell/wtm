@@ -6,10 +6,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/kylecarbonell/wtm/db"
 	"github.com/kylecarbonell/wtm/routes"
 )
 
 func main() {
+  db.Connect()
+
   gin.SetMode(gin.ReleaseMode)
   err := godotenv.Load()
   router := gin.New()

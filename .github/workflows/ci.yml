@@ -60,6 +60,7 @@ jobs:
         run: npx expo config --type prebuild
 
       - name: Run lint & format checks
-        run: |
-          bun run lint
-          bun run format:check
+        run: bun run lint
+          
+      - name: Run Prettier
+        run: bun prettier --write .

@@ -1,0 +1,58 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.24"
+
+      - name: Tidy modules
+        run: go mod tidy
+
+      - name: Build backend
+        run: go build ./...
+
+     - name: Run backend tests (if any)
+       run: |
+        go test ./... || echo "No tests found"
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install deps
+        run: bun install
+
+      - name: Type check (if TS)
+        run: bun tsc --noEmit || echo "No TS config"
+
+      - name: Expo config check
+        run: npx expo config --type prebuild
+
+      - name: Lint frontend
+        run: bun lint

@@ -6,4 +6,5 @@ import (
 
 func RegisterRoutes(router *gin.RouterGroup) {
 	GetFeedRoutes(router)
+	GetUserRoutes(router)
 }

@@ -8,6 +8,7 @@ type User struct {
 	gorm.Model
 	Schema
 	Name string
-	Email string
+	Email string `gorm:"uniqueIndex"`
 	Password string
+	Username string
 }

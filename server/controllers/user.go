@@ -69,14 +69,14 @@ func Authenticate(c *gin.Context){
 		"user_id": newUser.Id,
 		"exp":     time.Now().Add(time.Hour * 72).Unix(), // 3-day expiry
 	})
-	
+
 	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Failed to generate token"})
 		return 
 	}
 
-	log.Println("THIS OS OT", tokenString)
+
 
 	c.JSON(200, gin.H{
 		"token": tokenString,

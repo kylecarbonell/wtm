@@ -4,8 +4,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
 	"github.com/kylecarbonell/wtm/db"
 	"github.com/kylecarbonell/wtm/db/models"
 	"github.com/kylecarbonell/wtm/services"
@@ -21,6 +25,7 @@ func CreateUser(c *gin.Context){
 	}
 
 	user.Password = newPass
+	user.Id = uuid.New()
 
 	log.Println(user)
 
@@ -43,11 +48,44 @@ func CreateUser(c *gin.Context){
 }
 
 func Authenticate(c *gin.Context){
-	user := c.MustGet("data").(types.User)
+	user := c.MustGet("data").(types.LoginInput)
+	var newUser types.User;
 
-	log.Println(user)
+	findUser := db.DB.Where("email = ? ", user.Identifier).Or("username = ? ", user.Identifier).Find(&newUser)
 
-	c.JSON(200, user)
+	if findUser.Error != nil{
+		c.JSON(404, "Username or Email does not exist")
+		return
+	}
+
+
+	checkPw := services.ComparePassword(user.Password, newUser.Password)
+	if !checkPw{
+		c.JSON(403, "Incorrect password!")
+		return
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user_id": newUser.Id,
+		"exp":     time.Now().Add(time.Hour * 72).Unix(), // 3-day expiry
+	})
+	
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Failed to generate token"})
+		return 
+	}
+
+	log.Println("THIS OS OT", tokenString)
+
+	c.JSON(200, gin.H{
+		"token": tokenString,
+		"user": gin.H{
+			"id":    newUser.Id,
+			"name":  newUser.Name,
+			"email": newUser.Email,
+		},
+	})
 	return
 }
 

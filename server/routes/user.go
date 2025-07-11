@@ -10,5 +10,6 @@ func GetUserRoutes(router *gin.RouterGroup){
 	api := router.Group("/user")
 	{
 		api.POST("/", validators.ValidateUser, controllers.CreateUser)
+		api.POST("/auth", validators.ValidateLogin, controllers.Authenticate)
 	}
 }

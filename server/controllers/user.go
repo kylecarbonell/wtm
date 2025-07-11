@@ -42,3 +42,12 @@ func CreateUser(c *gin.Context){
 	c.JSON(http.StatusOK, fmt.Sprintf("User %s created", user.Name))
 }
 
+func Authenticate(c *gin.Context){
+	user := c.MustGet("data").(types.User)
+
+	log.Println(user)
+
+	c.JSON(200, user)
+	return
+}
+

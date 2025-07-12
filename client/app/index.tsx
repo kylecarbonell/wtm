@@ -7,9 +7,7 @@ import { Text, View } from "react-native"
 export default function App() {
     return (
         <>
-            <SafeAreaView className='bg-purple-400'>
-                <Auth />
-            </SafeAreaView>
+            <Auth />
         </>
     );
 }

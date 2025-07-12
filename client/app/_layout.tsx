@@ -29,7 +29,7 @@ export default function TabLayout() {
                 const routeName = focusedRouteName.toLowerCase();
 
                 // List of routes that should hide the tab bar
-                const hideTabRoutes = ['auth', 'login', 'register'];
+                const hideTabRoutes = ['index', 'register'];
 
                 return {
                     headerShown: false,

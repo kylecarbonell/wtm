@@ -3,12 +3,8 @@ package controllers
 import (
 	"fmt"
 	"log"
-	"net/http"
-	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
 	"github.com/kylecarbonell/wtm/db"
 	"github.com/kylecarbonell/wtm/db/models"
@@ -17,11 +13,15 @@ import (
 )
 
 func CreateUser(c *gin.Context){
+	log.Println("HERE")
 	user := c.MustGet("data").(types.User) 
 	newPass, err := services.HashPassword(user.Password)
+	
+	log.Println(user)
 
 	if err != nil{
 		c.JSON(400, "Error hashing password")
+		return
 	}
 
 	user.Password = newPass
@@ -29,11 +29,19 @@ func CreateUser(c *gin.Context){
 
 	log.Println(user)
 
-	var check []models.User
-	db.DB.Where("email = ?", user.Email).Find(&check)
+	var checkEmail []models.User
+	db.DB.Where("email = ?", user.Email).First(&checkEmail)
 
-	if len(check) != 0{
+	if len(checkEmail) != 0 {
 		c.JSON(400, "Email already exists")
+		return
+	}
+
+	var checkUser []models.User
+	db.DB.Where("username = ?", user.Username).First(&checkUser)
+
+	if len(checkUser) != 0 {
+		c.JSON(400, "Username already exists")
 		return
 	}
 	
@@ -42,13 +50,24 @@ func CreateUser(c *gin.Context){
 
 	if res.Error != nil{
 		c.JSON(400, res.Error.Error())
+		return
 	}
 
-	c.JSON(http.StatusOK, fmt.Sprintf("User %s created", user.Name))
+	tokenString := services.GenerateToken(user)
+	log.Println("THIS IS TOKEN", tokenString)
+	c.JSON(200, gin.H{
+		"token": tokenString,
+		"user": gin.H{
+			"id":    user.Id,
+			"name":  user.Name,
+			"email": user.Email,
+		},
+		"message": fmt.Sprintf("User %s created", user.Username),
+	})
+	return
 }
 
 func Authenticate(c *gin.Context){
-	log.Println("IM HERE")
 	user := c.MustGet("data").(types.LoginInput)
 	var newUser types.User;
 
@@ -66,16 +85,7 @@ func Authenticate(c *gin.Context){
 		return
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": newUser.Id,
-		"exp":     time.Now().Add(time.Hour * 72).Unix(), // 3-day expiry
-	})
-
-	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
-	if err != nil {
-		c.JSON(400, gin.H{"error": "Failed to generate token"})
-		return 
-	}
+	tokenString := services.GenerateToken(newUser)
 
 
 

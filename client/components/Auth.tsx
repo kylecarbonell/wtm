@@ -46,6 +46,7 @@ export default function Auth() {
                     </View>
 
                 </View>
+
                 <Pressable className="bg-purple-500 rounded-lg w-full h-10 flex items-center justify-center"
                     onPress={async () => {
                         const val = await login(identifier, password)
@@ -53,7 +54,7 @@ export default function Auth() {
                             return
                         } else {
                             console.log(val.token)
-                            await AsyncStorage.setItem('token', val.token);
+                            await AsyncStorage.setItem('token', val.token!);
                             router.push("/home")
                         }
 
@@ -61,6 +62,12 @@ export default function Auth() {
                     <Text className="text-white font-semibold text-lg">Log in</Text>
                 </Pressable>
 
+                <View className="flex items-end h-96 justify-center flex-row">
+                    <Pressable className="flex flex-row" onPress={() => { router.push("/auth") }}>
+                        <Text>Don't have an account? </Text>
+                        <Text className="text-blue-500">Sign Up</Text>
+                    </Pressable>
+                </View>
             </View>
 
         </SafeAreaView>

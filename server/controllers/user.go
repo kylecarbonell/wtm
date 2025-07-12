@@ -48,6 +48,7 @@ func CreateUser(c *gin.Context){
 }
 
 func Authenticate(c *gin.Context){
+	log.Println("IM HERE")
 	user := c.MustGet("data").(types.LoginInput)
 	var newUser types.User;
 

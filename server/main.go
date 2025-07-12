@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/kylecarbonell/wtm/db"
+	"github.com/kylecarbonell/wtm/middleware"
 	"github.com/kylecarbonell/wtm/routes"
 )
 
@@ -19,6 +20,7 @@ func main() {
   api := router.Group("/api/v1")
 
   routes.RegisterRoutes(api)
+  router.Use(middleware.CORS())
   
   if err != nil {
 	log.Fatal("❌ Error loading .env file")

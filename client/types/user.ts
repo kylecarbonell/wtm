@@ -9,8 +9,10 @@ const zUser = z.object({
 type User = z.infer<typeof zUser>;
 
 export const zUserLogin = z.object({
-    token: z.string(),
-    user: zUser,
+    token: z.string().optional(),
+    user: zUser.optional(),
+    status: z.number(),
+    message: z.string(),
 });
 
 type UserLogin = z.infer<typeof zUserLogin>;

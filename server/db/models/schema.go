@@ -8,7 +8,6 @@ import (
 
 type Schema struct {
 	gorm.Model
-	Id     	 string `gorm:"primaryKey"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt

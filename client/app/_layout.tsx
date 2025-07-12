@@ -1,26 +1,20 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome.js';
-import { Tabs } from 'expo-router/build/index.js';
+import { Tabs } from 'expo-router';
 import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import * as Keychain from 'react-native-keychain';
 import * as SecureStore from 'expo-secure-store';
-import Auth from 'app/auth';
 
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
-
 export default function TabLayout() {
-    const [token, setToken] = useState<string>()
-
     useEffect(() => {
         async function getToken() {
-            await SecureStore.setItemAsync('token', "22313");
+            await SecureStore.setItemAsync('token', '22313');
             const token = await SecureStore.getItemAsync('token');
-            console.log(token)
+            console.log(token);
         }
 
-        getToken()
-    }, [])
+        getToken();
+    }, []);
     return (
         <Tabs
             screenOptions={({ route }) => {
@@ -37,8 +31,7 @@ export default function TabLayout() {
                         ? { display: 'none' }
                         : { display: 'flex' },
                 };
-            }}
-        >
+            }}>
             <Tabs.Screen
                 name="index"
                 options={{
@@ -46,7 +39,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color }: { color: string }) => (
                         <FontAwesome size={28} name="home" color={color} />
                     ),
-                    href: null
+                    href: null,
                 }}
             />
             <Tabs.Screen
@@ -56,17 +49,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color }: { color: string }) => (
                         <FontAwesome size={28} name="user" color={color} />
                     ),
-                    href: null
-                }}
-            />
-            <Tabs.Screen
-                name="Auth"
-                options={{
-                    title: 'Auth',
-                    tabBarIcon: ({ color }: { color: string }) => (
-                        <FontAwesome size={28} name="user" color={color} />
-                    ),
-                    href: null
+                    href: null,
                 }}
             />
             <Tabs.Screen

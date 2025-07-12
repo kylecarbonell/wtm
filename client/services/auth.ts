@@ -14,7 +14,7 @@ export async function login(identifier: string, password: string) {
 
     const status = data.status;
     console.log(status);
-    if (status == 403) {
+    if (status === 403) {
         console.log('HERE');
         return null;
     }
@@ -42,7 +42,7 @@ export async function signUp(name: string, username: string, email: string, pass
 
     const json = await data.json();
     let body = { ...json, status: data.status };
-    if (data.status != 200) {
+    if (data.status !== 200) {
         body = { message: json, status: data.status };
     }
 

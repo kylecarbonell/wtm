@@ -11,15 +11,15 @@ export default function App() {
     useEffect(() => {
         async function get() {
             const name = await AsyncStorage.getItem('token');
-            console.log("THIS IS MY TOKEN AFTER LOAD", name); // → "kcarbonell"
+            console.log('THIS IS MY TOKEN AFTER LOAD', name); // → "kcarbonell"
         }
-        get()
-    }, [])
+        get();
+    }, []);
     return (
         <>
             <SafeAreaView>
                 <Header></Header>
-                <ScrollView className="mt-4 h-screenpb-32">
+                <ScrollView className="h-screenpb-32 mt-4">
                     {Array(5)
                         .fill(0)
                         .map((val, i) => (

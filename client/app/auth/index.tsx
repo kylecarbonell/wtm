@@ -1,8 +1,9 @@
-import CreateAuth from "components/CreateAuth"
-import { SafeAreaView, Text } from "react-native"
+import CreateAuth from 'components/CreateAuth';
 
 export default function App() {
-    return <>
-        <CreateAuth></CreateAuth>
-    </>
+    return (
+        <>
+            <CreateAuth></CreateAuth>
+        </>
+    );
 }

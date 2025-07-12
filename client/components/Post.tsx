@@ -1,7 +1,6 @@
 import { Text, View, Image } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-const POST = require('../assets/images/post.jpeg');
 export default function Post() {
     return (
         <>
@@ -11,7 +10,8 @@ export default function Post() {
                     <View className="flex flex-row items-center gap-x-3">
                         <Image
                             source={require('../assets/images/post2.jpeg')}
-                            className="h-12 w-12 rounded-full bg-orange-600" />
+                            className="h-12 w-12 rounded-full bg-orange-600"
+                        />
                         <Text className="font-semibold">party_arty_dk</Text>
                     </View>
                     <AntDesign name="ellipsis1" size={20} color="black" />
@@ -39,7 +39,6 @@ export default function Post() {
                     <Text>
                         {/* Caption */}
                         <Text>Like by ...</Text>
-
                     </Text>
                 </View>
 
@@ -50,7 +49,6 @@ export default function Post() {
                         <Text className="font-bold">party_arty_dk </Text>
                         {/* Caption */}
                         <Text>This is me snowboarding </Text>
-
                     </Text>
                 </View>
             </View>

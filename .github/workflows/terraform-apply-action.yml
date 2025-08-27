@@ -3,10 +3,10 @@ run-name: Running terraform apply...
 on:
   workflow_dispatch:
     inputs:
-      message:
-        description: 'A message to display'
+      project_name:
+        description: 'Name of the project'
         required: false
-        default: 'Starting terraform apply...'
+        default: 'Aggieworks-Product'
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -25,12 +25,9 @@ jobs:
       - name: Write terraform.tfvars
         run: |
           echo 'Writing terraform.tfvars'
-          TFVARS_JSON='{
-            "project_name": "New PRoject"
-          }'
-
-          # Convert JSON to HCL-compatible tfvars format
-          echo "$TFVARS_JSON" | jq -r 'to_entries | map("\(.key) = \"\(.value)\"") | .[]' > terraform.tfvars
+          cat > terraform.tfvars <<EOF
+          project_name = "${{ github.event.inputs.project_name }}"
+          EOF
 
       - name: Check files
         run: ls -a

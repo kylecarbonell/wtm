@@ -10,10 +10,10 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src/cicd/infra
     steps:
-      - name: Test HI
-        run: echo "HI"
-
       - name: Checkout repo
         uses: actions/checkout@v4
 
@@ -22,13 +22,34 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Write terraform.tfvars
+        run: |
+          echo 'Writing terraform.tfvars'
+          TFVARS_JSON='{
+            "project_name": "New PRoject"
+          }'
+
+          # Convert JSON to HCL-compatible tfvars format
+          echo "$TFVARS_JSON" | jq -r 'to_entries | map("\(.key) = \"\(.value)\"") | .[]' > terraform.tfvars
+
+      - name: Check files
+        run: ls -a
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.7.5
 
       - name: Terraform Init
-        run: terraform -chdir=./src/cicd/infra init
+        run: terraform init
 
       - name: Terraform Apply
-        run: terraform -chdir=./src/cicd/infra apply -auto-approve
+        run: terraform apply -auto-approve
+
+      - name: Run Only If Apply Succeeded
+        run: echo "Terraform applied successfully!"
+        if: success()
+
+      - name: Run Only If Apply Failed
+        run: echo "Terraform apply failed!"
+        if: failure()

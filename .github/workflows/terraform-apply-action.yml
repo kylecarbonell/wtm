@@ -3,17 +3,17 @@ run-name: Running terraform apply...
 on:
   workflow_dispatch:
     inputs:
-      message:
-        description: 'A message to display'
+      project_name:
+        description: 'Name of the project'
         required: false
-        default: 'Starting terraform apply...'
+        default: 'Aggieworks-Product'
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src/cicd/infra
     steps:
-      - name: Test HI
-        run: echo "HI"
-
       - name: Checkout repo
         uses: actions/checkout@v4
 
@@ -22,13 +22,31 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Write terraform.tfvars
+        run: |
+          echo 'Writing terraform.tfvars'
+          cat > terraform.tfvars <<EOF
+          project_name = "${{ github.event.inputs.project_name }}"
+          EOF
+
+      - name: Check files
+        run: ls -a
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.7.5
 
       - name: Terraform Init
-        run: terraform -chdir=./src/cicd/infra init
+        run: terraform init
 
       - name: Terraform Apply
-        run: terraform -chdir=./src/cicd/infra apply -auto-approve
+        run: terraform apply -auto-approve
+
+      - name: Run Only If Apply Succeeded
+        run: echo "Terraform applied successfully!"
+        if: success()
+
+      - name: Run Only If Apply Failed
+        run: echo "Terraform apply failed!"
+        if: failure()

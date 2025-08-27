@@ -1,0 +1,34 @@
+name: terraform-apply-action
+run-name: Running terraform apply...
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'A message to display'
+        required: false
+        default: 'Starting terraform apply...'
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test HI
+        run: echo "HI"
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+
+      - name: Terraform Init
+        run: terraform -chdir=./src/cicd/infra init
+
+      - name: Terraform Apply
+        run: terraform -chdir=./src/cicd/infra apply -auto-approve
